@@ -5,10 +5,18 @@ import (
 	"todo/app"
 )
 
-func main() {
+func setup() *http.ServeMux {
 	router := http.NewServeMux()
 	controllers := app.NewControllers()
 	controllers.RegisterRoutes(router)
 
-	http.ListenAndServe(":8080", router)
+	return router
+}
+
+func main() {
+	router := setup()
+	err := http.ListenAndServe(":8080", router)
+	if err != nil {
+		panic(err)
+	}
 }
