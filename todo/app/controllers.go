@@ -1,17 +1,21 @@
 package app
 
-import "net/http"
+import (
+	"net/http"
+
+	hc "github.com/mariusfa/gofl/health-controller"
+)
 
 type Controllers struct {
-	health *HealthController
+	health *hc.HealthController
 }
 
 func NewControllers() *Controllers {
 	return &Controllers{
-		health: NewHealthController(),
+		health: hc.NewHealthController(),
 	}
 }
 
 func (c *Controllers) RegisterRoutes(router *http.ServeMux) {
-	c.health.registerRoutes(router)
+	c.health.RegisterRoutes(router)
 }
