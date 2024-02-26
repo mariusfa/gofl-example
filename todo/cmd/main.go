@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"todo/app"
-	"todo/internal/config"
+
+	"github.com/mariusfa/gofl/config"
 )
 
 func setup() *http.ServeMux {

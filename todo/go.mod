@@ -2,8 +2,11 @@ module todo
 
 go 1.22.0
 
+// For local dev
+// replace github.com/mariusfa/gofl => ../../gofl
+
 require (
-	github.com/mariusfa/gofl v1.0.4
+	github.com/mariusfa/gofl v1.1.0
 	github.com/spf13/viper v1.18.2
 )
 
