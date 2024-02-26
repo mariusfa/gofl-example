@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"todo/app"
+	"todo/internal/config"
 )
 
 func setup() *http.ServeMux {
@@ -14,8 +16,16 @@ func setup() *http.ServeMux {
 }
 
 func main() {
+	config, err := config.GetConfig()
+	if err != nil {
+		panic(err)
+	}
+
+	addr := fmt.Sprintf(":%d", config.Port)
 	router := setup()
-	err := http.ListenAndServe(":8080", router)
+
+	println("Listening on", addr)
+	err = http.ListenAndServe(addr, router)
 	if err != nil {
 		panic(err)
 	}
