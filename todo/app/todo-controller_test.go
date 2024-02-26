@@ -4,11 +4,22 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"todo/internal/domain/todo"
 )
+
+type TodoServiceFake struct{}
+
+func (s *TodoServiceFake) GetTodos() []todo.Todo {
+	return []todo.Todo{
+		{Title: "todo 1"},
+		{Title: "todo 2"},
+	}
+}
 
 func TestGetTodos(t *testing.T) {
 	router := http.NewServeMux()
-	todoController := NewTodoController()
+	fake := &TodoServiceFake{}
+	todoController := NewTodoController(fake)
 	todoController.RegisterRoutes(router)
 
 	req, err := http.NewRequest("GET", "/todo", nil)

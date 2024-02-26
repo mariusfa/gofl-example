@@ -3,12 +3,17 @@ package app
 import (
 	"encoding/json"
 	"net/http"
+	"todo/internal/domain/todo"
 )
 
-type TodoController struct{}
+type TodoController struct{
+	TodoService todo.TodoServiceContract
+}
 
-func NewTodoController() *TodoController {
-	return &TodoController{}
+func NewTodoController(todoService todo.TodoServiceContract) *TodoController {
+	return &TodoController{
+		TodoService: todoService,
+	}
 }
 
 func (c *TodoController) RegisterRoutes(router *http.ServeMux) {
@@ -16,12 +21,10 @@ func (c *TodoController) RegisterRoutes(router *http.ServeMux) {
 }
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
-	listOfTodos := []TodoDTO{
-		{Title: "todo 1"},
-		{Title: "todo 2"},
-	}
+	listOfTodos := c.TodoService.GetTodos()
+	listOfDTO := fromDomainToDTOs(listOfTodos)
 
-	jsonTodos, err := json.Marshal(listOfTodos)
+	jsonTodos, err := json.Marshal(listOfDTO)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
