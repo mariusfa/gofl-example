@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"todo/app"
 	"todo/internal/domain"
+	"todo/internal/logging"
 
-	"github.com/mariusfa/gofl/config"
+	"github.com/mariusfa/gofl/v2/config"
 )
 
 func setup() *http.ServeMux {
@@ -19,15 +20,18 @@ func setup() *http.ServeMux {
 }
 
 func main() {
-	config, err := config.GetConfig()
+	logging.SetupAppLogger("todo")
+
+	config, err := config.GetConfig(logging.AppLogger)
 	if err != nil {
 		panic(err)
 	}
 
-	addr := fmt.Sprintf(":%d", config.Port)
 	router := setup()
 
-	println("Listening on", addr)
+	addr := fmt.Sprintf(":%d", config.Port)
+	logging.AppLogger.Info("Starting server on " + addr)
+
 	err = http.ListenAndServe(addr, router)
 	if err != nil {
 		panic(err)

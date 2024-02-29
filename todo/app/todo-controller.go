@@ -6,7 +6,7 @@ import (
 	"todo/internal/domain/todo"
 )
 
-type TodoController struct{
+type TodoController struct {
 	TodoService todo.TodoServiceContract
 }
 
