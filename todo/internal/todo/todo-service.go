@@ -1,5 +1,7 @@
 package todo
 
+import "github.com/google/uuid"
+
 type TodoServiceContract interface {
 	GetTodos() []Todo
 }
@@ -12,7 +14,7 @@ func NewTodoService() *TodoService {
 
 func (s *TodoService) GetTodos() []Todo {
 	return []Todo{
-		{Title: "todo 1"},
-		{Title: "todo 2"},
+		{Id: uuid.New(), Title: "todo 1"},
+		{Id: uuid.New(), Title: "todo 2"},
 	}
 }

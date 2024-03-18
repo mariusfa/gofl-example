@@ -3,7 +3,7 @@ package app
 import (
 	"encoding/json"
 	"net/http"
-	"todo/internal/domain/todo"
+	"todo/internal/todo"
 )
 
 type TodoController struct {

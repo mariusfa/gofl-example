@@ -1,8 +1,9 @@
 package app
 
-import "todo/internal/domain/todo"
+import "todo/internal/todo"
 
 type TodoDTO struct {
+	Id    string `json:"id"`
 	Title string `json:"title"`
 }
 
@@ -16,6 +17,7 @@ func fromDomainToDTOs(todos []todo.Todo) []TodoDTO {
 
 func fromDomainToDTO(todo todo.Todo) TodoDTO {
 	return TodoDTO{
+		Id:    todo.Id.String(),
 		Title: todo.Title,
 	}
 }

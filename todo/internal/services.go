@@ -1,6 +1,6 @@
-package domain
+package internal
 
-import "todo/internal/domain/todo"
+import "todo/internal/todo"
 
 type Services struct {
 	Todo *todo.TodoService

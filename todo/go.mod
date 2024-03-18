@@ -5,7 +5,10 @@ go 1.22.0
 // For local dev
 replace github.com/mariusfa/gofl => ../../gofl
 
-require github.com/mariusfa/gofl/v2 v2.1.1
+require (
+	github.com/google/uuid v1.4.0
+	github.com/mariusfa/gofl/v2 v2.1.1
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect

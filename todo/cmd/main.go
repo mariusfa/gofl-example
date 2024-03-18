@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"todo/app"
-	"todo/internal/domain"
+	"todo/internal"
 	"todo/internal/logging"
 
 	"github.com/mariusfa/gofl/v2/config"
@@ -12,7 +12,7 @@ import (
 
 func setup() *http.ServeMux {
 	router := http.NewServeMux()
-	services := domain.NewServices()
+	services := internal.NewServices()
 	controllers := app.NewControllers(services)
 	controllers.RegisterRoutes(router)
 

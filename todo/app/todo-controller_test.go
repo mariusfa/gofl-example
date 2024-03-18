@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"todo/internal/domain/todo"
+	"todo/internal/todo"
 )
 
 type TodoServiceFake struct{}
