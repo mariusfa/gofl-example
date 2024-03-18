@@ -19,17 +19,22 @@ func setup() *http.ServeMux {
 	return router
 }
 
+type Config struct {
+	Port string
+}
+
 func main() {
 	logging.SetupAppLogger("todo")
 
-	config, err := config.GetConfig(logging.AppLogger)
+	var appConfig Config
+	err := config.GetConfig(".env", &appConfig)
 	if err != nil {
 		panic(err)
 	}
 
 	router := setup()
 
-	addr := fmt.Sprintf(":%d", config.Port)
+	addr := fmt.Sprintf(":%s", appConfig.Port)
 	logging.AppLogger.Info("Starting server on " + addr)
 
 	err = http.ListenAndServe(addr, router)
