@@ -19,7 +19,6 @@ func setup() *http.ServeMux {
 	return router
 }
 
-
 type Config struct {
 	Port string
 }

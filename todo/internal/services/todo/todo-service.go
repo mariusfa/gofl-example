@@ -2,12 +2,11 @@ package todo
 
 import "github.com/google/uuid"
 
-type TodoService struct{
-	 
-	todoRepository todoRepository
+type TodoService struct {
+	todoRepository TodoRepository
 }
 
-type todoRepository interface {
+type TodoRepository interface {
 	GetTodos() []Todo
 }
 
