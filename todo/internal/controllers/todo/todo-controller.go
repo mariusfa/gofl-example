@@ -1,18 +1,22 @@
-package app
+package todo
 
 import (
 	"encoding/json"
 	"net/http"
-	"todo/internal/todo"
+	"todo/internal/services/todo"
 )
 
 type TodoController struct {
-	TodoService todo.TodoServiceContract
+	todoService TodoService
 }
 
-func NewTodoController(todoService todo.TodoServiceContract) *TodoController {
+type TodoService interface {
+	GetTodos() []todo.Todo
+}
+
+func NewTodoController(todoService TodoService) *TodoController {
 	return &TodoController{
-		TodoService: todoService,
+		todoService: todoService,
 	}
 }
 
@@ -21,7 +25,7 @@ func (c *TodoController) RegisterRoutes(router *http.ServeMux) {
 }
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
-	listOfTodos := c.TodoService.GetTodos()
+	listOfTodos := c.todoService.GetTodos()
 	listOfDTO := fromDomainToDTOs(listOfTodos)
 
 	jsonTodos, err := json.Marshal(listOfDTO)

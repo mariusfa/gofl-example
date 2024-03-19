@@ -1,6 +1,6 @@
-package app
+package todo
 
-import "todo/internal/todo"
+import "todo/internal/services/todo"
 
 type TodoDTO struct {
 	Id    string `json:"id"`

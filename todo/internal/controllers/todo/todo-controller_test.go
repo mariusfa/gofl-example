@@ -1,10 +1,10 @@
-package app
+package todo
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"todo/internal/todo"
+	"todo/internal/services/todo"
 )
 
 type TodoServiceFake struct{}

@@ -1,11 +1,9 @@
 package todo
 
-import "database/sql"
-
-type TodoRepositoryContract interface {
-	Insert(todo Todo) error
-	GetTodos() ([]Todo, error)
-}
+import (
+	"database/sql"
+	"todo/internal/services/todo"
+)
 
 type TodoRepository struct {
 	db *sql.DB
@@ -17,21 +15,21 @@ func NewTodoRepository(db *sql.DB) *TodoRepository {
 	}
 }
 
-func (r *TodoRepository) Insert(todo Todo) error {
+func (r *TodoRepository) Insert(todo todo.Todo) error {
 	_, err := r.db.Exec("INSERT INTO todoschema.todos (id, title) VALUES ($1, $2)", todo.Id, todo.Title)
 	return err
 }
 
-func (r *TodoRepository) GetTodos() ([]Todo, error) {
+func (r *TodoRepository) GetTodos() ([]todo.Todo, error) {
 	rows, err := r.db.Query("SELECT id, title FROM todoschema.todos")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var todos []Todo
+	var todos []todo.Todo
 	for rows.Next() {
-		var todo Todo
+		var todo todo.Todo
 		err := rows.Scan(&todo.Id, &todo.Title)
 		if err != nil {
 			return nil, err

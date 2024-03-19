@@ -1,12 +1,12 @@
-package internal
+package services
 
-import "todo/internal/todo"
+import "todo/internal/services/todo"
 
 type Services struct {
 	Todo *todo.TodoService
 }
 
-func NewServices() *Services {
+func New() *Services {
 	return &Services{
 		Todo: todo.NewTodoService(),
 	}

@@ -1,21 +1,22 @@
-package app
+package controllers
 
 import (
 	"net/http"
-	"todo/internal"
+	"todo/internal/controllers/todo"
+	"todo/internal/services"
 
 	hc "github.com/mariusfa/gofl/v2/health-controller"
 )
 
 type Controllers struct {
 	health *hc.HealthController
-	todo   *TodoController
+	todo   *todo.TodoController
 }
 
-func NewControllers(services *internal.Services) *Controllers {
+func New(services *services.Services) *Controllers {
 	return &Controllers{
 		health: hc.NewHealthController(),
-		todo:   NewTodoController(services.Todo),
+		todo:   todo.NewTodoController(services.Todo),
 	}
 }
 

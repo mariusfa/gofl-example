@@ -2,11 +2,14 @@ package todo
 
 import "github.com/google/uuid"
 
-type TodoServiceContract interface {
-	GetTodos() []Todo
+type TodoService struct{
+	 
+	todoRepository todoRepository
 }
 
-type TodoService struct{}
+type todoRepository interface {
+	GetTodos() []Todo
+}
 
 func NewTodoService() *TodoService {
 	return &TodoService{}

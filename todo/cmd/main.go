@@ -3,21 +3,22 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"todo/app"
-	"todo/internal"
+	"todo/internal/controllers"
 	"todo/internal/logging"
+	"todo/internal/services"
 
 	"github.com/mariusfa/gofl/v2/config"
 )
 
 func setup() *http.ServeMux {
 	router := http.NewServeMux()
-	services := internal.NewServices()
-	controllers := app.NewControllers(services)
+	services := services.New()
+	controllers := controllers.New(services)
 	controllers.RegisterRoutes(router)
 
 	return router
 }
+
 
 type Config struct {
 	Port string
