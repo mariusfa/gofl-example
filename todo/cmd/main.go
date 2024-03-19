@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	ac "todo/internal/config"
 	"todo/internal/controllers"
 	"todo/internal/logging"
 	"todo/internal/services"
@@ -19,14 +20,10 @@ func setup() *http.ServeMux {
 	return router
 }
 
-type Config struct {
-	Port string
-}
-
 func main() {
 	logging.SetupAppLogger("todo")
 
-	var appConfig Config
+	var appConfig ac.Config
 	err := config.GetConfig(".env", &appConfig)
 	if err != nil {
 		panic(err)
