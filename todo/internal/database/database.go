@@ -68,7 +68,6 @@ func resolveTemplates(fromPath string, toPath string, dbConfig DbConfig) error {
 		return err
 	}
 
-
 	for _, file := range files {
 		if err := resolveFile(file, fromPath, toPath, dbConfig); err != nil {
 			return err

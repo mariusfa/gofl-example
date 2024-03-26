@@ -39,7 +39,7 @@ func TestResolveAllTemplates(t *testing.T) {
 		AppUser:     "app_user",
 		AppPassword: "app_password",
 		RunBaseLine: "true",
-	} 
+	}
 	if err := resolveAllTemplates(dbConfig, path, toPath); err != nil {
 		t.Errorf("failed to resolve all templates: %v", err)
 	}
@@ -60,6 +60,32 @@ func TestResolveAllTemplates(t *testing.T) {
 	expectedContent2 := "HELLO;"
 	if string(content2) != expectedContent2 {
 		t.Errorf("file 2_setup.up.sql contains incorrect content. Expected: %s, Got: %s", expectedContent2, string(content2))
+	}
+
+	deleteDirectory(toPath)
+}
+
+func TestResolveWithoutBaseline(t *testing.T) {
+	path := "resolve_without_baseline_test"
+	toPath := filepath.Join(path, "resolved")
+	dbConfig := DbConfig{
+		AppUser:     "app_user",
+		AppPassword: "app_password",
+		RunBaseLine: "false",
+	}
+	if err := resolveAllTemplates(dbConfig, path, toPath); err != nil {
+		t.Errorf("failed to resolve all templates: %v", err)
+	}
+
+	_, err := os.ReadFile(filepath.Join(toPath, "1_setup.up.sql"))
+	if err == nil {
+		t.Errorf("file 1_setup.up.sql should not exist in resolved directory")
+	}
+
+	content, err := os.ReadFile(filepath.Join(toPath, "2_setup.up.sql"))
+	expectedContent := "HELLO;"
+	if string(content) != expectedContent {
+		t.Errorf("file 1_setup.up.sql contains incorrect content. Expected: %s, Got: %s", expectedContent, string(content))
 	}
 
 	deleteDirectory(toPath)
