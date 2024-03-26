@@ -11,7 +11,7 @@ type Config struct {
 	DbName        string
 	DbAppUser     string
 	DbAppPassword string
-	DbRunBaseLine string
+	DbRunBaseLine string `required:"false"`
 }
 
 func (c *Config) ToDbConfig() database.DbConfig {
