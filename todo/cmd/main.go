@@ -1,23 +1,39 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 	ac "todo/internal/config"
 	"todo/internal/controllers"
+	"todo/internal/database"
 	"todo/internal/logging"
+	"todo/internal/repositories"
 	"todo/internal/services"
 
 	"github.com/mariusfa/gofl/v2/config"
 )
 
-func setup() *http.ServeMux {
+func setup(services *services.Services) *http.ServeMux {
 	router := http.NewServeMux()
-	services := services.New()
 	controllers := controllers.New(services)
 	controllers.RegisterRoutes(router)
 
 	return router
+}
+
+func dbSetup(dbConfig database.DbConfig) (*sql.DB, error) {
+	db, err := database.Setup(dbConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	err = database.Migrate(dbConfig, "migrations")
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }
 
 func main() {
@@ -29,7 +45,14 @@ func main() {
 		panic(err)
 	}
 
-	router := setup()
+	db, err := dbSetup(appConfig.ToDbConfig())
+	if err != nil {
+		panic(err)
+	}
+
+	repositories := repositories.New(db)
+	services := services.New(repositories)
+	router := setup(services)
 
 	addr := fmt.Sprintf(":%s", appConfig.Port)
 	logging.AppLogger.Info("Starting server on " + addr)

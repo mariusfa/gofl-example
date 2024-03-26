@@ -7,10 +7,10 @@ type TodoService struct {
 }
 
 type TodoRepository interface {
-	GetTodos() []Todo
+	GetTodos() ([]Todo, error)
 }
 
-func NewTodoService() *TodoService {
+func NewTodoService(TodoRepository TodoRepository) *TodoService {
 	return &TodoService{}
 }
 

@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -22,6 +23,15 @@ func getAppConnectionString(dbConfig DbConfig) string {
 		dbConfig.AppUser, dbConfig.AppPassword, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 }
 
+func Setup(dbConfig DbConfig) (*sql.DB, error) {
+	connectionString := getAppConnectionString(dbConfig)
+	db, err := sql.Open("postgres", connectionString)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
+}
+
 func Migrate(dbConfig DbConfig, migrationsPath string) error {
 	resolvedMigrationsPath := filepath.Join(migrationsPath, "resolved")
 	if err := resolveAllTemplates(dbConfig, migrationsPath, resolvedMigrationsPath); err != nil {
@@ -32,9 +42,12 @@ func Migrate(dbConfig DbConfig, migrationsPath string) error {
 	if err != nil {
 		return err
 	}
+
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		return err
 	}
+
+	deleteDirectory(resolvedMigrationsPath)
 	return nil
 }
 

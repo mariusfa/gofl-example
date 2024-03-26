@@ -1,7 +1,16 @@
 package repositories
 
-import "todo/internal/repositories/todo"
+import (
+	"database/sql"
+	"todo/internal/repositories/todo"
+)
 
 type Repositories struct {
-	todo *todo.TodoRepository
+	Todo *todo.TodoRepository
+}
+
+func New(db *sql.DB) *Repositories {
+	return &Repositories{
+		Todo: todo.NewTodoRepository(db),
+	}
 }
