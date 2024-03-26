@@ -8,7 +8,7 @@ GRANT USAGE ON SCHEMA todoschema TO {{.User}};
 
 CREATE TABLE IF NOT EXISTS todoschema.todos (
     id UUID PRIMARY KEY NOT NULL,
-    task VARCHAR NOT NULL
+    title VARCHAR NOT NULL
 );
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON todoschema.todos TO {{.User}};

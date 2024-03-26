@@ -49,6 +49,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	repositories := repositories.New(db)
 	services := services.New(repositories)

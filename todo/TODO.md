@@ -1,6 +1,6 @@
 # Todo
 
-- fix tests. See main setup function
-- setup db test container
-- setup todo repository test
+- refactor testcontainer to use SetupTestContainer
+    - It should include create, get host and port and cleanup function
+- setup todo service to use todo repository
 - move database package to gofl
