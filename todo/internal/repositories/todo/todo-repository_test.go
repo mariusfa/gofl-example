@@ -9,7 +9,7 @@ import (
 )
 
 func TestInsertGetTodos(t *testing.T) {
-	db, err := database.Setup(dbConfig)
+	db, err := database.Setup(&dbConfig)
 	if err != nil {
 		t.Fatalf("Failed to setup database: %v", err)
 	}

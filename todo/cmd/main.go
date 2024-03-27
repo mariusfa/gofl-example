@@ -22,7 +22,7 @@ func setup(services *services.Services) *http.ServeMux {
 	return router
 }
 
-func dbSetup(dbConfig database.DbConfig) (*sql.DB, error) {
+func dbSetup(dbConfig *database.DbConfig) (*sql.DB, error) {
 	db, err := database.Setup(dbConfig)
 	if err != nil {
 		return nil, err
@@ -45,7 +45,17 @@ func main() {
 		panic(err)
 	}
 
-	db, err := dbSetup(appConfig.ToDbConfig())
+	dbConfig := appConfig.ToDbConfig()
+
+	if dbConfig.StartupLocal == "true" {
+		containerCleanUp, err := database.SetupContainer(&dbConfig, "migrations")
+		if err != nil {
+			panic(err)
+		}
+		defer containerCleanUp()
+	}
+
+	db, err := dbSetup(&dbConfig)
 	if err != nil {
 		panic(err)
 	}

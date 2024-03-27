@@ -17,7 +17,7 @@ func TestResolveFile(t *testing.T) {
 
 	deleteDirectory(toPath)
 	createDirectory(toPath)
-	resolveFile("1_setup.up.sql", fromPath, toPath, dbConfig)
+	resolveFile("1_setup.up.sql", fromPath, toPath, &dbConfig)
 
 	content, err := os.ReadFile(filepath.Join(toPath, "1_setup.up.sql"))
 	if err != nil {
@@ -40,7 +40,7 @@ func TestResolveAllTemplates(t *testing.T) {
 		AppPassword: "app_password",
 		RunBaseLine: "true",
 	}
-	if err := resolveAllTemplates(dbConfig, path, toPath); err != nil {
+	if err := resolveAllTemplates(&dbConfig, path, toPath); err != nil {
 		t.Errorf("failed to resolve all templates: %v", err)
 	}
 
@@ -73,7 +73,7 @@ func TestResolveWithoutBaseline(t *testing.T) {
 		AppPassword: "app_password",
 		RunBaseLine: "false",
 	}
-	if err := resolveAllTemplates(dbConfig, path, toPath); err != nil {
+	if err := resolveAllTemplates(&dbConfig, path, toPath); err != nil {
 		t.Errorf("failed to resolve all templates: %v", err)
 	}
 

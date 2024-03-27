@@ -13,17 +13,17 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func getMigrationConnectionString(dbConfig DbConfig) string {
+func getMigrationConnectionString(dbConfig *DbConfig) string {
 	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 }
 
-func getAppConnectionString(dbConfig DbConfig) string {
+func getAppConnectionString(dbConfig *DbConfig) string {
 	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		dbConfig.AppUser, dbConfig.AppPassword, dbConfig.Host, dbConfig.Port, dbConfig.Name)
 }
 
-func Setup(dbConfig DbConfig) (*sql.DB, error) {
+func Setup(dbConfig *DbConfig) (*sql.DB, error) {
 	connectionString := getAppConnectionString(dbConfig)
 	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
@@ -32,7 +32,7 @@ func Setup(dbConfig DbConfig) (*sql.DB, error) {
 	return db, nil
 }
 
-func Migrate(dbConfig DbConfig, migrationsPath string) error {
+func Migrate(dbConfig *DbConfig, migrationsPath string) error {
 	resolvedMigrationsPath := filepath.Join(migrationsPath, "resolved")
 	if err := resolveAllTemplates(dbConfig, migrationsPath, resolvedMigrationsPath); err != nil {
 		return err
@@ -51,7 +51,7 @@ func Migrate(dbConfig DbConfig, migrationsPath string) error {
 	return nil
 }
 
-func resolveAllTemplates(dbConfig DbConfig, migrationsPath string, resolvedMigrationsPath string) error {
+func resolveAllTemplates(dbConfig *DbConfig, migrationsPath string, resolvedMigrationsPath string) error {
 	if err := deleteDirectory(resolvedMigrationsPath); err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func resolveAllTemplates(dbConfig DbConfig, migrationsPath string, resolvedMigra
 	return nil
 }
 
-func resolveTemplates(fromPath string, toPath string, dbConfig DbConfig) error {
+func resolveTemplates(fromPath string, toPath string, dbConfig *DbConfig) error {
 	files, err := getFiles(fromPath)
 	if err != nil {
 		return err
@@ -103,7 +103,7 @@ func getFiles(fromPath string) ([]string, error) {
 	return files, nil
 }
 
-func resolveFile(file string, fromPath string, toPath string, dbConfig DbConfig) error {
+func resolveFile(file string, fromPath string, toPath string, dbConfig *DbConfig) error {
 	// read file
 	contentBytes, err := os.ReadFile(filepath.Join(fromPath, file))
 	if err != nil {
