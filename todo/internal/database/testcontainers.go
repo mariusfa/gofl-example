@@ -16,7 +16,7 @@ import (
  * The function will setup the container, run the test, and clean up the container
  */
 func SinglePostgresTestMain(m *testing.M, dbConfig *DbConfig, migrationPath string) {
-	cleanUp, err := SetupContainer(dbConfig, migrationPath)
+	cleanUp, err := SetupContainer(dbConfig)
 	if err != nil {
 		log.Fatalf("Failed to setup container: %v", err)
 	}
@@ -34,7 +34,7 @@ func SinglePostgresTestMain(m *testing.M, dbConfig *DbConfig, migrationPath stri
  * This will setup a new postgres container and it's cleanup function
  * The function will also change the host and port of the dbConfig to the container's host and port
  */
-func SetupContainer(dbConfig *DbConfig, migrationPath string) (func(), error) {
+func SetupContainer(dbConfig *DbConfig) (func(), error) {
 	container, err := createPostgresContainer(dbConfig)
 	if err != nil {
 		return func() {}, err

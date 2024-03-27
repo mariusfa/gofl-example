@@ -48,7 +48,7 @@ func main() {
 	dbConfig := appConfig.ToDbConfig()
 
 	if dbConfig.StartupLocal == "true" {
-		containerCleanUp, err := database.SetupContainer(&dbConfig, "migrations")
+		containerCleanUp, err := database.SetupContainer(&dbConfig)
 		if err != nil {
 			panic(err)
 		}
