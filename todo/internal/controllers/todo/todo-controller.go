@@ -23,6 +23,7 @@ func NewTodoController(todoService TodoService) *TodoController {
 
 func (c *TodoController) RegisterRoutes(router *http.ServeMux) {
 	router.HandleFunc("GET /todo", c.getTodos)
+	router.HandleFunc("POST /todo", c.postTodo)
 }
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
@@ -44,4 +45,22 @@ func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonTodos)
+}
+
+func (c *TodoController) postTodo(w http.ResponseWriter, r *http.Request) {
+	var newTodo TodoRequestDTO
+	err := json.NewDecoder(r.Body).Decode(&newTodo)
+	if err != nil {
+		// TODO: log error instead of returning error to client
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = c.todoService.Insert(todo.NewTodo(newTodo.Title))
+	if err != nil {
+		// TODO: log error instead of returning error to client
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
 }

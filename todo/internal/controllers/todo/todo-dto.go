@@ -21,3 +21,7 @@ func fromDomainToDTO(todo todo.Todo) TodoDTO {
 		Title: todo.Title,
 	}
 }
+
+type TodoRequestDTO struct {
+	Title string `json:"title"`
+}
