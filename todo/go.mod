@@ -3,7 +3,7 @@ module todo
 go 1.22.0
 
 // For local dev
-replace github.com/mariusfa/gofl => ../../gofl
+replace github.com/mariusfa/gofl/v2 => ../../gofl
 
 require (
 	github.com/golang-migrate/migrate/v4 v4.17.0

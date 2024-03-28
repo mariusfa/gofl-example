@@ -1,6 +1,6 @@
 package config
 
-import "todo/internal/database"
+import "github.com/mariusfa/gofl/v2/database"
 
 type Config struct {
 	Port           string
@@ -15,16 +15,16 @@ type Config struct {
 	DbStartupLocal string `required:"false"`
 }
 
-func (c *Config) ToDbConfig() database.DbConfig {
-	return database.DbConfig{
-		Host:         c.DbHost,
-		Port:         c.DbPort,
-		User:         c.DbUser,
-		Password:     c.DbPassword,
-		AppUser:      c.DbAppUser,
-		AppPassword:  c.DbAppPassword,
-		Name:         c.DbName,
-		RunBaseLine:  c.DbRunBaseLine,
-		StartupLocal: c.DbStartupLocal,
-	}
+func (c *Config) ToDbConfig() *database.DbConfig {
+	return database.NewDbConfig(
+		c.DbHost,
+		c.DbName,
+		c.DbPort,
+		c.DbUser,
+		c.DbPassword,
+		c.DbAppUser,
+		c.DbAppPassword,
+		c.DbRunBaseLine,
+		c.DbStartupLocal,
+	)
 }

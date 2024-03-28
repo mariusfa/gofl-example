@@ -6,12 +6,12 @@ import (
 	"net/http"
 	ac "todo/internal/config"
 	"todo/internal/controllers"
-	"todo/internal/database"
 	"todo/internal/logging"
 	"todo/internal/repositories"
 	"todo/internal/services"
 
 	"github.com/mariusfa/gofl/v2/config"
+	"github.com/mariusfa/gofl/v2/database"
 )
 
 func setup(services *services.Services) *http.ServeMux {
@@ -48,14 +48,14 @@ func main() {
 	dbConfig := appConfig.ToDbConfig()
 
 	if dbConfig.StartupLocal == "true" {
-		containerCleanUp, err := database.SetupContainer(&dbConfig)
+		containerCleanUp, err := database.SetupContainer(dbConfig)
 		if err != nil {
 			panic(err)
 		}
 		defer containerCleanUp()
 	}
 
-	db, err := dbSetup(&dbConfig)
+	db, err := dbSetup(dbConfig)
 	if err != nil {
 		panic(err)
 	}

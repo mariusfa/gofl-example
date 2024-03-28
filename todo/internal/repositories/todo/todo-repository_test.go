@@ -2,10 +2,10 @@ package todo
 
 import (
 	"testing"
-	"todo/internal/database"
 	"todo/internal/services/todo"
 
 	"github.com/google/uuid"
+	"github.com/mariusfa/gofl/v2/database"
 )
 
 func TestInsertGetTodos(t *testing.T) {
