@@ -9,13 +9,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type TodoServiceFake struct {
-	Todos []todo.Todo
-}
-
-func (s *TodoServiceFake) GetTodos() []todo.Todo {
-	return s.Todos
-}
 
 func TestGetTodos(t *testing.T) {
 	router := http.NewServeMux()

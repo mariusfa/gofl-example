@@ -23,6 +23,7 @@ func (c *Config) ToDbConfig() database.DbConfig {
 		Password:     c.DbPassword,
 		AppUser:      c.DbAppUser,
 		AppPassword:  c.DbAppPassword,
+		Name:         c.DbName,
 		RunBaseLine:  c.DbRunBaseLine,
 		StartupLocal: c.DbStartupLocal,
 	}

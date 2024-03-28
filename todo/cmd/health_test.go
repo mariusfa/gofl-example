@@ -14,6 +14,10 @@ func (t *todoRepoFake) GetTodos() ([]todo.Todo, error) {
 	return []todo.Todo{}, nil
 }
 
+func (t *todoRepoFake) Insert(todo todo.Todo) error {
+	return nil
+}
+
 func TestHealth(t *testing.T) {
 	todoFake := &todoRepoFake{}
 	todoService := todo.NewTodoService(todoFake)
