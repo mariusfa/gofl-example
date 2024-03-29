@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"todo/internal/services/todo"
+
+	accessmiddleware "github.com/mariusfa/gofl/v2/access-middleware"
 )
 
 type TodoController struct {
@@ -22,9 +24,22 @@ func NewTodoController(todoService TodoService) *TodoController {
 }
 
 func (c *TodoController) RegisterRoutes(router *http.ServeMux) {
-	router.HandleFunc("GET /todo", c.getTodos)
-	router.HandleFunc("POST /todo", c.postTodo)
+	c.registerGetTodosRoute(router)
+	c.registerPostTodoRoute(router)
 }
+
+func (c *TodoController) registerGetTodosRoute(router *http.ServeMux) {
+	handler := http.HandlerFunc(c.getTodos)
+	handlerWithMiddlware := accessmiddleware.AccessMiddleware(handler)
+	router.Handle("GET /todo", handlerWithMiddlware)
+}
+
+ func (c *TodoController) registerPostTodoRoute(router *http.ServeMux) {
+	handler := http.HandlerFunc(c.postTodo)
+	handlerWithMiddlware := accessmiddleware.AccessMiddleware(handler)
+	router.Handle("POST /todo", handlerWithMiddlware)
+}
+
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
 	listOfTodos, err := c.todoService.GetTodos()
