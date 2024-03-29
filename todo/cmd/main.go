@@ -6,12 +6,13 @@ import (
 	"net/http"
 	ac "todo/internal/config"
 	"todo/internal/controllers"
-	"todo/internal/logging"
 	"todo/internal/repositories"
 	"todo/internal/services"
 
 	"github.com/mariusfa/gofl/v2/config"
 	"github.com/mariusfa/gofl/v2/database"
+	accesslog "github.com/mariusfa/gofl/v2/logging/access-log"
+	applog "github.com/mariusfa/gofl/v2/logging/app-log"
 )
 
 func setup(services *services.Services) *http.ServeMux {
@@ -37,7 +38,9 @@ func dbSetup(dbConfig *database.DbConfig) (*sql.DB, error) {
 }
 
 func main() {
-	logging.SetupAppLogger("todo")
+	appName := "todo"
+	applog.AppLog = applog.NewAppLogger(appName)
+	accesslog.AccessLog = accesslog.NewAccessLogger(appName)
 
 	var appConfig ac.Config
 	err := config.GetConfig(".env", &appConfig)
@@ -66,7 +69,7 @@ func main() {
 	router := setup(services)
 
 	addr := fmt.Sprintf(":%s", appConfig.Port)
-	logging.AppLogger.Info("Starting server on " + addr)
+	applog.AppLog.Info("Starting server on " + addr)
 
 	err = http.ListenAndServe(addr, router)
 	if err != nil {
