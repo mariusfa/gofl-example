@@ -2,10 +2,12 @@ package todo
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"todo/internal/services/todo"
 
 	accessmiddleware "github.com/mariusfa/gofl/v2/access-middleware"
+	tracelog "github.com/mariusfa/gofl/v2/logging/trace-log"
 )
 
 type TodoController struct {
@@ -42,17 +44,18 @@ func (c *TodoController) registerPostTodoRoute(router *http.ServeMux) {
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
 	listOfTodos, err := c.todoService.GetTodos()
+	err = errors.New("error")
 	if err != nil {
-		// TODO: log error instead of returning error to client
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		tracelog.TraceLog.Error(err.Error())
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
 		return
 	}
 	listOfDTO := fromDomainToDTOs(listOfTodos)
 
 	jsonTodos, err := json.Marshal(listOfDTO)
 	if err != nil {
-		// TODO: log error instead of returning error to client
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		tracelog.TraceLog.Error(err.Error())
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
 		return
 	}
 
@@ -65,15 +68,15 @@ func (c *TodoController) postTodo(w http.ResponseWriter, r *http.Request) {
 	var newTodo TodoRequestDTO
 	err := json.NewDecoder(r.Body).Decode(&newTodo)
 	if err != nil {
-		// TODO: log error instead of returning error to client
+		tracelog.TraceLog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = c.todoService.Insert(todo.NewTodo(newTodo.Title))
 	if err != nil {
-		// TODO: log error instead of returning error to client
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		tracelog.TraceLog.Error(err.Error())
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)

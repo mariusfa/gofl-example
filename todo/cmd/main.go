@@ -13,6 +13,7 @@ import (
 	"github.com/mariusfa/gofl/v2/database"
 	accesslog "github.com/mariusfa/gofl/v2/logging/access-log"
 	applog "github.com/mariusfa/gofl/v2/logging/app-log"
+	tracelog "github.com/mariusfa/gofl/v2/logging/trace-log"
 )
 
 func setup(services *services.Services) *http.ServeMux {
@@ -41,6 +42,7 @@ func main() {
 	appName := "todo"
 	applog.AppLog = applog.NewAppLogger(appName)
 	accesslog.AccessLog = accesslog.NewAccessLogger(appName)
+	tracelog.TraceLog = tracelog.NewTraceLogger(appName)
 
 	var appConfig ac.Config
 	err := config.GetConfig(".env", &appConfig)
