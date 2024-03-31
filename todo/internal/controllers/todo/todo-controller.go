@@ -34,12 +34,11 @@ func (c *TodoController) registerGetTodosRoute(router *http.ServeMux) {
 	router.Handle("GET /todo", handlerWithMiddlware)
 }
 
- func (c *TodoController) registerPostTodoRoute(router *http.ServeMux) {
+func (c *TodoController) registerPostTodoRoute(router *http.ServeMux) {
 	handler := http.HandlerFunc(c.postTodo)
 	handlerWithMiddlware := accessmiddleware.AccessMiddleware(handler)
 	router.Handle("POST /todo", handlerWithMiddlware)
 }
-
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
 	listOfTodos, err := c.todoService.GetTodos()
