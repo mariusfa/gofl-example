@@ -1,3 +1,4 @@
 # Todo
 
-- setup tracelogging and fix todos in controller
+- Create update todo
+- Create delete todo
