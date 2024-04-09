@@ -2,7 +2,6 @@ package todo
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"todo/internal/services/todo"
 
@@ -44,7 +43,6 @@ func (c *TodoController) registerPostTodoRoute(router *http.ServeMux) {
 
 func (c *TodoController) getTodos(w http.ResponseWriter, r *http.Request) {
 	listOfTodos, err := c.todoService.GetTodos()
-	err = errors.New("error")
 	if err != nil {
 		tracelog.TraceLog.Error(err.Error())
 		http.Error(w, "Something went wrong", http.StatusInternalServerError)
